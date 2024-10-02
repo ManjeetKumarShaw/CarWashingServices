@@ -12,20 +12,19 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-//        ChromeOptions option = new ChromeOptions();
-//		option.addArguments("start-maximized");
-//		option.addArguments("--disable-blink-features=AutomationControlled");
-//		option.addArguments("--disable-notifications");
-//		WebDriver driver = new ChromeDriver(option);
-		EdgeOptions options = new EdgeOptions();
-		options.addArguments("start-maximized");
-		options.addArguments("--disable-blink-features=AutomationControlled");
-		options.addArguments("--disable-notifications");
-
-		WebDriver driver = new EdgeDriver(options);
+        ChromeOptions option = new ChromeOptions();
+		option.addArguments("start-maximized");
+		option.addArguments("--disable-blink-features=AutomationControlled");
+		option.addArguments("--disable-notifications");
+		WebDriver driver = new ChromeDriver(option);
+//		EdgeOptions options = new EdgeOptions();
+//		options.addArguments("start-maximized");
+//		options.addArguments("--disable-blink-features=AutomationControlled");
+//		options.addArguments("--disable-notifications");
+//
+//		WebDriver driver = new EdgeDriver(options);
         // Navigate to the website
         driver.get("https://www.justdial.com/");
-        driver.manage().window().maximize();
 
         // Clear cookies
         driver.manage().deleteAllCookies();
@@ -39,14 +38,15 @@ public class Main {
 
         // Enter search term
         driver.findElement(By.xpath("//*[@id='main-auto']")).sendKeys("Car Washing");
-        Thread.sleep(2000);
+        
 
         // Click on the first suggestion
-        driver.findElement(By.xpath("//ul/li/a")).click();
-        Thread.sleep(3000);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ul/li/a//b[1]"))).click();
 
-        driver.findElement(By.xpath("//*[text()=\"Top Rated\"]")).click();
-        Thread.sleep(2000);
+       // driver.findElement(By.xpath("//ul/li/a//b[text()=\"Car Washing Services\"]")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()=\"Top Rated\"]"))).click();
+
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@keyid='0']//*[contains(@class, ' resultbox_title_anchor ')]")));
         
         for(int i=0; i<5; i++) {
         	System.out.println("name : "+driver.findElement(By.xpath("//*[@keyid='"+i+"']//*[contains(@class, ' resultbox_title_anchor ')]")).getText());
@@ -54,9 +54,10 @@ public class Main {
         	System.out.println("rating : "+driver.findElement(By.xpath("//*[@keyid='"+i+"']//*[contains(@class, ' whitestar ')]/parent::div")).getText());
         	String str = driver.findElement(By.xpath("//*[@keyid='"+i+"']//div[contains(@class,\" resultbox_countrate  \")]")).getText();
         	System.out.println("votes :"+str.split(" ")[0]);
-        	driver.findElement(By.xpath("//*[@keyid='"+i+"']//*[contains(@class, 'callcontent')]")).click();
-        	String phone= wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@keyid='"+i+"']//*[contains(@class, 'whitecall_icon')]/following-sibling::a"))).getText();
+        	driver.findElement(By.xpath("//*[@keyid='"+i+"']//*[contains(normalize-space(@class), 'callcontent')]")).click();
+        	String phone= wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@keyid='"+i+"']//*[contains(@class, 'whitecall_icon')]/parent::*"))).getText();
         	System.out.println("Phone no : "+ phone);
+ 
         }
         driver.get("https://www.justdial.com/");
         driver.findElement(By.xpath("//*[text()=\"Free Listing\"]")).click();
