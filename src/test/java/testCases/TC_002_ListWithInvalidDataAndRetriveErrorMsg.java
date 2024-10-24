@@ -1,5 +1,6 @@
 package testCases;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import pageObjects.FreeListingPage;
@@ -10,12 +11,26 @@ public class TC_002_ListWithInvalidDataAndRetriveErrorMsg extends BaseClass {
 
 	@Test
 	public void errorMsgForInvalidData() {
+		
+		logger.info("**** Starting TC_002_ListWithInvalidDataAndRetriveErrorMsg *****");
+		
+		try {
 		HomePage hp = new HomePage(driver);
-		hp.handleLoginPopup();
+		try {
+			hp.handleLoginPopup();
+		}catch(Exception e) {
+			logger.info("login pop did not appeared");
+		}
 		hp.listServices();
 		
 		FreeListingPage flp = new FreeListingPage(driver);
 		flp.listWithInvalidMobileNo();
 		flp.retriveErrorMsg();
+		}catch(Exception e) {
+			Assert.fail("An exception occurred: " + e.getMessage());
+		}
+		
+		logger.info("**** TC_002_ListWithInvalidDataAndRetriveErrorMsg Completed Successfully *****");
+
 	}
 }

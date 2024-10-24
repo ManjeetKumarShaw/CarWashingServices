@@ -21,7 +21,7 @@ public class CarWashingServicesPage extends BasePage {
     }
     
     public void topRatedFilter() {
-        wait.until(ExpectedConditions.presenceOfElementLocated(topRatedFilterLocator)).click();
+    	wait.until(ExpectedConditions.presenceOfElementLocated(topRatedFilterLocator)).click();
     }
     
     public void retriveFiveWashingServices() throws IOException {
